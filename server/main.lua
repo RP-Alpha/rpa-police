@@ -16,8 +16,8 @@ RegisterNetEvent('rpa-police:server:collectCasing', function(index)
         table.remove(Casings, index)
         TriggerClientEvent('rpa-police:client:syncCasings', -1, Casings)
         
-        -- Give item via bridge
-        exports['rpa-lib']:Notify(src, "Evidence Collected: Casing", "success")
+                         -- Give item via bridge
+        exports['rpa-lib']:Notify(src, _U('evidence_collected', 'Casing'), "success")
         -- exports['rpa-lib']:AddItem(src, 'casing', 1, { weapon = casing.weapon })
     end
 end)

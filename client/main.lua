@@ -55,18 +55,25 @@ RegisterCommand('cuff', function()
 -- Evidence System
 local Casings = {}
 
+-- Evidence System
+local Casings = {}
+
 CreateThread(function()
     while true do
-        Wait(10)
         local ped = PlayerPedId()
-        if IsPedShooting(ped) then
-            local weapon = GetSelectedPedWeapon(ped)
-            if weapon ~= `WEAPON_STUNGUN` and weapon ~= `WEAPON_FIREEXTINGUISHER` then
-                -- Trigger Server
-                local coords = GetEntityCoords(ped)
-                TriggerServerEvent('rpa-police:server:addCasing', coords, weapon)
-                Wait(500) -- Rate limit casing drops
+        if IsPedArmed(ped, 4) then -- Only check if armed with a gun
+            if IsPedShooting(ped) then
+                local weapon = GetSelectedPedWeapon(ped)
+                if weapon ~= `WEAPON_STUNGUN` and weapon ~= `WEAPON_FIREEXTINGUISHER` then
+                    -- Trigger Server
+                    local coords = GetEntityCoords(ped)
+                    TriggerServerEvent('rpa-police:server:addCasing', coords, weapon)
+                    Wait(500) -- Rate limit casing drops
+                end
             end
+            Wait(0)
+        else
+            Wait(1000) -- Sleep heavily if not armed
         end
     end
 end)
