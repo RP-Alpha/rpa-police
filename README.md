@@ -1,18 +1,59 @@
 # rpa-police
 
-Core Police job interactions and mechanics.
+<div align="center">
 
-## Features
-- **Interactions**: Handcuff, Escort, Put in Vehicle interactions.
-- **Stations**: Configurable police stations with lockers (Duty toggle).
-- **Armory**: Access to weapons (via shop integration).
+![GitHub Release](https://img.shields.io/github/v/release/RP-Alpha/rpa-police?style=for-the-badge&logo=github&color=blue)
+![GitHub commits](https://img.shields.io/github/commits-since/RP-Alpha/rpa-police/latest?style=for-the-badge&logo=git&color=green)
+![License](https://img.shields.io/github/license/RP-Alpha/rpa-police?style=for-the-badge&color=orange)
+![Downloads](https://img.shields.io/github/downloads/RP-Alpha/rpa-police/total?style=for-the-badge&logo=github&color=purple)
 
-## Installation
-1. Ensure `rpa-lib` is started.
-2. Add `ensure rpa-police` to your `server.cfg`.
+**Complete Police Job System**
 
-## Credits
-- RP-Alpha Development Team
+</div>
 
-## License
-MIT
+---
+
+## ✨ Features
+
+- 👮 **Duty System** - Clock in/out at stations
+- 🔗 **Handcuffing** - Restrain suspects with animations
+- 🚔 **Vehicle Garage** - Spawn police vehicles
+- 🔍 **Evidence System** - Bullet casings drop on shooting
+- 📦 **Evidence Collection** - Pick up and store evidence
+
+---
+
+## 📥 Installation
+
+1. Download the [latest release](https://github.com/RP-Alpha/rpa-police/releases/latest)
+2. Extract to your `resources` folder
+3. Add to `server.cfg`:
+   ```cfg
+   ensure rpa-police
+   ```
+
+---
+
+## ⚙️ Configuration
+
+Configure stations in `config.lua`:
+
+```lua
+Config.Stations = {
+    ['mrpd'] = {
+        label = "Mission Row PD",
+        locker = vector3(x, y, z),
+        garage = vector3(x, y, z)
+    }
+}
+```
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+<div align="center">
+  <sub>Built with ❤️ by <a href="https://github.com/RP-Alpha">RP-Alpha</a></sub>
+</div>
