@@ -1,8 +1,23 @@
-RegisterNetEvent('rpa-police:server:toggleDuty', function()
+local Casings = {}
+
+RegisterNetEvent('rpa-police:server:addCasing', function(coords, weapon)
+    table.insert(Casings, {
+        coords = coords,
+        weapon = weapon,
+        id = os.time()
+    })
+    TriggerClientEvent('rpa-police:client:syncCasings', -1, Casings)
+end)
+
+RegisterNetEvent('rpa-police:server:collectCasing', function(index)
     local src = source
-    local player = exports['rpa-lib']:GetFramework().Functions.GetPlayer(src)
-    
-    -- QB specific duty toggle often requires direct framework call or job update
-    -- Ideally framework handles this, but here's a placeholder
-    exports['rpa-lib']:Notify(src, "Toggled Duty", "success")
+    if Casings[index] then
+        local casing = Casings[index]
+        table.remove(Casings, index)
+        TriggerClientEvent('rpa-police:client:syncCasings', -1, Casings)
+        
+        -- Give item via bridge
+        exports['rpa-lib']:Notify(src, "Evidence Collected: Casing", "success")
+        -- exports['rpa-lib']:AddItem(src, 'casing', 1, { weapon = casing.weapon })
+    end
 end)

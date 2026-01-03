@@ -52,5 +52,56 @@ end)
 RegisterCommand('cuff', function()
     -- Get closest player logic
     -- TriggerServerEvent('rpa-police:server:cuff', targetId)
-    print("Use target system to cuff")
+-- Evidence System
+local Casings = {}
+
+CreateThread(function()
+    while true do
+        Wait(10)
+        local ped = PlayerPedId()
+        if IsPedShooting(ped) then
+            local weapon = GetSelectedPedWeapon(ped)
+            if weapon ~= `WEAPON_STUNGUN` and weapon ~= `WEAPON_FIREEXTINGUISHER` then
+                -- Trigger Server
+                local coords = GetEntityCoords(ped)
+                TriggerServerEvent('rpa-police:server:addCasing', coords, weapon)
+                Wait(500) -- Rate limit casing drops
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('rpa-police:client:syncCasings', function(data)
+    Casings = data
+end)
+
+-- Rendering Casings
+CreateThread(function()
+    while true do
+        Wait(0)
+        local ped = PlayerPedId()
+        local coords = GetEntityCoords(ped)
+        
+        if #Casings > 0 then
+            for i, casing in ipairs(Casings) do
+                if #(coords - casing.coords) < 10.0 then
+                    -- Simple Marker
+                    DrawMarker(3, casing.coords.x, casing.coords.y, casing.coords.z + 0.02, 0,0,0, 0,0,0, 0.1, 0.1, 0.1, 255, 255, 0, 100, false, false, 2, false, nil, nil, false)
+                    
+                    if #(coords - casing.coords) < 1.0 then
+                         exports['rpa-lib']:TextUI("[E] Collect Casing")
+                         if IsControlJustPressed(0, 38) then
+                             -- Anim
+                             TaskStartScenarioInPlace(ped, "CODE_HUMAN_MEDIC_KNEEL", 0, true)
+                             Wait(2000)
+                             ClearPedTasks(ped)
+                             TriggerServerEvent('rpa-police:server:collectCasing', i)
+                         end
+                    end
+                end
+            end
+        else
+            Wait(1000)
+        end
+    end
 end)
