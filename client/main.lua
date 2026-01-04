@@ -50,10 +50,30 @@ end)
 
 -- Command to trigger cuff (Target would call server which triggers this on target)
 RegisterCommand('cuff', function()
-    -- Get closest player logic
-    -- TriggerServerEvent('rpa-police:server:cuff', targetId)
--- Evidence System
-local Casings = {}
+    local ped = PlayerPedId()
+    local coords = GetEntityCoords(ped)
+    local closestPlayer, closestDistance = nil, 3.0
+    
+    -- Find closest player
+    for _, playerId in ipairs(GetActivePlayers()) do
+        if playerId ~= PlayerId() then
+            local targetPed = GetPlayerPed(playerId)
+            local targetCoords = GetEntityCoords(targetPed)
+            local distance = #(coords - targetCoords)
+            
+            if distance < closestDistance then
+                closestPlayer = GetPlayerServerId(playerId)
+                closestDistance = distance
+            end
+        end
+    end
+    
+    if closestPlayer then
+        TriggerServerEvent('rpa-police:server:cuff', closestPlayer)
+    else
+        exports['rpa-lib']:Notify(_U('no_target') or "No player nearby", "error")
+    end
+end, false)
 
 -- Evidence System
 local Casings = {}
