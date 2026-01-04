@@ -20,6 +20,15 @@
 - 🚔 **Vehicle Garage** - Spawn police vehicles
 - 🔍 **Evidence System** - Bullet casings drop on shooting
 - 📦 **Evidence Collection** - Pick up and store evidence
+- 🔐 **Permission System** - Role-based access control
+
+---
+
+## 📦 Dependencies
+
+- `rpa-lib` (Required)
+- `rpa-dispatch` (Recommended)
+- `ox_target` or `qb-target` (Recommended)
 
 ---
 
@@ -29,14 +38,13 @@
 2. Extract to your `resources` folder
 3. Add to `server.cfg`:
    ```cfg
+   ensure rpa-lib
    ensure rpa-police
    ```
 
 ---
 
 ## ⚙️ Configuration
-
-Configure stations in `config.lua`:
 
 ```lua
 Config.Stations = {
